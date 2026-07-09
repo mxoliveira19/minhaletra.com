@@ -38,7 +38,7 @@ try {
 <body>
     <main class="page">
         <section class="hero">
-            <h1>Minha Letra2222</h1>
+            <h1>Minha Letra</h1>
             <p>Poesias, letras e textos autorais de Maurício de Oliveira.</p>
         </section>
 
