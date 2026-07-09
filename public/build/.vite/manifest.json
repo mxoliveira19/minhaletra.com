@@ -1,0 +1,11 @@
+{
+  "src/main.js": {
+    "file": "assets/main-umDA_zs_.js",
+    "name": "main",
+    "src": "src/main.js",
+    "isEntry": true,
+    "css": [
+      "assets/main-RgASjx2j.css"
+    ]
+  }
+}

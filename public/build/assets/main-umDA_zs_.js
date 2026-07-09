@@ -1,0 +1,1 @@
+console.log(`Minha Letra carregado com Vite.`);
