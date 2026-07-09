@@ -1,5 +1,7 @@
+@'
 node_modules
 vendor
 .env
 .DS_Store
 meus_docs/*
+'@ | Set-Content -Encoding UTF8 .gitignore
