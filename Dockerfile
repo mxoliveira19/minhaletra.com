@@ -23,4 +23,10 @@ RUN docker-php-ext-install \
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+COPY package*.json ./
+RUN npm ci
+
+COPY . .
+RUN npm run build
+
 EXPOSE 9000
