@@ -47,10 +47,8 @@ if [ -d public/build ]; then
   uid="$(id -u)"
   gid="$(id -g)"
 
-  docker run --rm \
-    -v "$PROJECT_DIR:/work" \
-    alpine:latest \
-    chown -R "$uid:$gid" /work/public/build
+  docker compose run --rm --no-deps "$PHP_SERVICE" \
+    chown -R "$uid:$gid" /var/www/html/public/build
 fi
 fi
 
