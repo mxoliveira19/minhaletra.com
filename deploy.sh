@@ -44,10 +44,13 @@ echo "Instalando dependencias e gerando assets Vite dentro do container..."
 docker compose run --rm --no-deps "$PHP_SERVICE" sh -lc 'npm ci && npm run build'
 
 if [ -d public/build ]; then
-uid="$(id -u)"
-gid="$(id -g)"
-docker run --rm -v "$PROJECT_DIR:/work" alpine:latest 
-chown -R "$uid:$gid" /work/public/build
+  uid="$(id -u)"
+  gid="$(id -g)"
+
+  docker run --rm \
+    -v "$PROJECT_DIR:/work" \
+    alpine:latest \
+    chown -R "$uid:$gid" /work/public/build
 fi
 fi
 
