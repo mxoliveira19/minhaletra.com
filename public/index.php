@@ -2,54 +2,59 @@
 
 declare(strict_types=1);
 
+// Custom PSR-4 Autoloader
+spl_autoload_register(function ($class) {
+    $prefix = 'App\\';
+    $baseDir = __DIR__ . '/../app/';
+
+    $len = strlen($prefix);
+    if (strncmp($prefix, $class, $len) !== 0) {
+        return;
+    }
+
+    $relativeClass = substr($class, $len);
+    $file = $baseDir . str_replace('\\', '/', $relativeClass) . '.php';
+
+    if (file_exists($file)) {
+        require $file;
+    }
+});
+
 require_once __DIR__ . '/../app/Config/config.php';
-require_once __DIR__ . '/../app/Core/Database.php';
-require_once __DIR__ . '/../app/Core/Vite.php';
 
-use App\Core\Database;
-use App\Core\Vite;
+use App\Core\Router;
+use App\Controllers\SiteController;
+use App\Controllers\AdminController;
 
-$dbStatus = 'Não testado';
-
-try {
-    $pdo = Database::connect();
-    $stmt = $pdo->query('SELECT DATABASE() AS db_name');
-    $row = $stmt->fetch();
-
-    $dbStatus = 'Conectado ao banco: ' . htmlspecialchars($row['db_name'] ?? 'desconhecido');
-} catch (Throwable $e) {
-    $dbStatus = 'Erro ao conectar no banco: ' . htmlspecialchars($e->getMessage());
+// Initialize Session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-?>
-<!doctype html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
+$router = new Router();
 
-    <title>Minha Letra | Poesias e textos de Maurício de Oliveira</title>
-    <meta name="description" content="Poesias, letras e textos autorais de Maurício de Oliveira.">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+// Public routes
+$router->get('/', [SiteController::class, 'home']);
+$router->get('/poesias', [SiteController::class, 'poesias']);
+$router->get('/frases', [SiteController::class, 'frases']);
+$router->get('/cronicas', [SiteController::class, 'cronicas']);
+$router->get('/pensamentos', [SiteController::class, 'pensamentos']);
+$router->get('/sobre', [SiteController::class, 'sobre']);
 
-    <link rel="canonical" href="https://minhaletra.com/">
+// Admin routes
+$router->get('/admin/login', [AdminController::class, 'login']);
+$router->post('/admin/login', [AdminController::class, 'login']);
+$router->get('/admin/logout', [AdminController::class, 'logout']);
 
-    <?= Vite::asset('src/main.js') ?>
-</head>
-<body>
-    <main class="page">
-        <section class="hero">
-            <h1>Minha Letra</h1>
-            <p>Poesias, letras e textos autorais de Maurício de Oliveira.</p>
-        </section>
+$router->get('/admin', [AdminController::class, 'dashboard']);
+$router->post('/admin/novo', [AdminController::class, 'novo']);
+$router->post('/admin/editar', [AdminController::class, 'editar']);
+$router->get('/admin/status', [AdminController::class, 'status']);
+$router->post('/admin/status', [AdminController::class, 'status']);
+$router->get('/admin/deletar', [AdminController::class, 'deletar']);
+$router->post('/admin/deletar', [AdminController::class, 'deletar']);
+$router->get('/admin/credenciais', [AdminController::class, 'credenciais']);
+$router->post('/admin/credenciais', [AdminController::class, 'credenciais']);
 
-        <section class="card">
-            <h2>Site PHP com Docker, MariaDB e Vite</h2>
-            <p>Se você está vendo esta página, o PHP está funcionando.</p>
-
-            <div class="status">
-                <?= $dbStatus ?>
-            </div>
-        </section>
-    </main>
-</body>
-</html>
+// Dispatch
+$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
