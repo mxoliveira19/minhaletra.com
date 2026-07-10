@@ -1,8 +1,9 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  publicDir: false,
   build: {
-    manifest: true,
+    manifest: 'manifest.json',
     outDir: 'public/build',
     emptyOutDir: true,
     rollupOptions: {
