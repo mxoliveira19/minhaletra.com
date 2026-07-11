@@ -53,7 +53,7 @@ $isAdmin = isset($_SESSION['user_id']);
                     <li><a href="/teorias" class="nav-link <?= $activeTab === 'teorias' ? 'active' : '' ?>">Teorias</a></li>
                     <li><a href="/sobre" class="nav-link <?= $activeTab === 'sobre' ? 'active' : '' ?>">Sobre</a></li>
                     
-                    <?php if ($isAdmin): ?>
+                    <?php if ($isAdmin && $activeTab === 'admin'): ?>
                         <li class="admin-item"><a href="/admin" class="nav-link admin-badge <?= $activeTab === 'admin' ? 'active' : '' ?>">Painel Admin</a></li>
                         <li><a href="/admin/logout" class="nav-link logout-link">Sair</a></li>
                     <?php endif; ?>
