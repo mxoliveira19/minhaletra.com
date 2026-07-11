@@ -877,6 +877,17 @@ blockquote {
     gap: 12px;
 }
 
+.admin-container .btn-secondary {
+    background-color: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--border-color);
+}
+
+.admin-container .btn-secondary:hover {
+    background-color: var(--accent);
+    color: var(--white);
+}
+
 /* Admin Tabs navigation */
 .admin-tabs {
     display: flex;

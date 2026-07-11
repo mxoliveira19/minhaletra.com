@@ -9,7 +9,7 @@ $activeTab = 'admin'; // For layout navbar
             <p>Bem-vindo, <strong><?= htmlspecialchars($user_nome) ?></strong>. Gerencie os textos do site.</p>
         </div>
         <div class="admin-header-actions">
-            <a href="/admin/credenciais" class="btn btn-secondary">Alterar Usuário/Senha</a>
+            <a href="/admin/credenciais" class="btn btn-secondary">Credenciais</a>
             <a href="/admin/logout" class="btn btn-danger">Sair</a>
         </div>
     </header>
