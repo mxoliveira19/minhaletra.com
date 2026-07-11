@@ -2,6 +2,11 @@
 import './style.css';
 
 document.addEventListener('DOMContentLoaded', () => {
+    const resizeTitleField = (field) => {
+        field.style.height = 'auto';
+        field.style.height = `${field.scrollHeight}px`;
+    };
+
     // 1. Mobile Menu Toggle
     const navToggle = document.getElementById('navToggle');
     const navbar = document.getElementById('navbar');
@@ -143,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         let preview = '';
                         
                         if (tipo === 'poesias') {
-                            preview = text.split('\n').slice(0, 4).join('\n');
+                            preview = text.split('\n').slice(0, 5).join('\n');
                         } else if (tipo === 'frases') {
                             preview = text;
                         } else {
@@ -171,6 +176,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Auto-save inline inputs (Title, Mode, Weight) on change
         const inlineInputs = form.querySelectorAll('.inline-input-title, .inline-select-modo, .inline-input-peso');
         inlineInputs.forEach(input => {
+            if (input.classList.contains('inline-input-title')) {
+                resizeTitleField(input);
+                input.addEventListener('input', () => resizeTitleField(input));
+            }
+
             input.addEventListener('change', () => {
                 if (typeof form.requestSubmit === 'function') {
                     form.requestSubmit();

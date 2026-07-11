@@ -96,12 +96,14 @@ final class AdminController
         }
 
         $textos = $this->textoModel->allAdmin($tipoDb, $tab);
+        $rascunhosCount = $this->textoModel->countAdminByStatus($tipoDb, 'rascunho');
 
         $this->renderAdminView('dashboard', [
             'title' => 'Painel de Controle - Minha Letra',
             'tipo' => $tipo,
             'tab' => $tab,
             'textos' => $textos,
+            'rascunhosCount' => $rascunhosCount,
             'user_nome' => $_SESSION['user_nome'] ?? 'Administrador'
         ]);
     }
@@ -198,6 +200,11 @@ final class AdminController
         $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
         $status = $_GET['status'] ?? $_POST['status'] ?? 'publicado';
         $tipo = $_GET['tipo'] ?? $_POST['tipo'] ?? 'poesias';
+        $tab = $_GET['tab'] ?? $_POST['tab'] ?? 'ativos';
+
+        if (!in_array($tab, ['ativos', 'rascunho'], true)) {
+            $tab = 'ativos';
+        }
 
         $success = false;
         if ($id > 0) {
@@ -210,7 +217,7 @@ final class AdminController
             exit;
         }
 
-        header('Location: /admin?tipo=' . $tipo);
+        header('Location: /admin?tipo=' . urlencode($tipo) . '&tab=' . urlencode($tab));
         exit;
     }
 

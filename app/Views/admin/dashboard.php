@@ -30,7 +30,7 @@ $activeTab = 'admin'; // For layout navbar
                 Publicados
             </a>
             <a href="/admin?tipo=<?= $tipo ?>&tab=rascunho" class="filter-btn <?= $tab === 'rascunho' ? 'active' : '' ?>">
-                Rascunhos (<?= count($textos) ?>)
+                Rascunhos (<?= (int)$rascunhosCount ?>)
             </a>
         </div>
         <div>
@@ -96,7 +96,7 @@ $activeTab = 'admin'; // For layout navbar
                     $lines = explode("\n", $texto['conteudo']);
                     $previewText = '';
                     if ($tipo === 'poesias') {
-                        $previewText = implode("\n", array_slice($lines, 0, 4));
+                        $previewText = implode("\n", array_slice($lines, 0, 5));
                     } elseif ($tipo === 'frases') {
                         $previewText = $texto['conteudo'];
                     } else {
@@ -114,14 +114,12 @@ $activeTab = 'admin'; // For layout navbar
                             <div class="row-fields-visible">
                                 <!-- Title -->
                                 <div class="col-title">
-                                    <input type="text" name="titulo" value="<?= htmlspecialchars($texto['titulo']) ?>" class="inline-input-title" placeholder="Sem título">
+                                    <textarea name="titulo" class="inline-input-title" rows="1" placeholder="Sem título"><?= htmlspecialchars($texto['titulo']) ?></textarea>
                                 </div>
 
                                 <!-- Text Preview (Read-only on visible layout) -->
                                 <div class="col-preview">
-                                    <div class="preview-text-box" title="Clique em Editar para alterar o texto">
-                                        <?= nl2br(htmlspecialchars($previewText)) ?>
-                                    </div>
+                                    <div class="preview-text-box" title="Clique em Editar para alterar o texto"><?= nl2br(htmlspecialchars($previewText)) ?></div>
                                 </div>
 
                                 <!-- Mode -->
@@ -146,7 +144,7 @@ $activeTab = 'admin'; // For layout navbar
                                         <button type="button" class="action-btn btn-edit btn-toggle-editor" data-id="<?= $texto['id'] ?>">Editar</button>
                                     <?php else: ?>
                                         <!-- Restore to site -->
-                                        <a href="/admin/status?id=<?= $texto['id'] ?>&status=publicado&tipo=<?= $tipo ?>" class="action-btn btn-restore" title="Restituir no site">Restituir</a>
+                                        <a href="/admin/status?id=<?= $texto['id'] ?>&status=publicado&tipo=<?= $tipo ?>&tab=rascunho" class="action-btn btn-restore" title="Restituir no site">Restituir</a>
                                         <!-- Permanent delete -->
                                         <a href="/admin/deletar?id=<?= $texto['id'] ?>&tipo=<?= $tipo ?>" class="action-btn btn-delete btn-confirm-delete" title="Deletar permanentemente">Deletar</a>
                                     <?php endif; ?>

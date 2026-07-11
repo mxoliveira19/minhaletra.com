@@ -59,6 +59,22 @@ final class Texto
     }
 
     /**
+     * Count admin texts of a specific type and status.
+     */
+    public function countAdminByStatus(string $tipo, string $status): int
+    {
+        // Normalize 'poesias' to 'poesia' for database
+        $tipoQuery = ($tipo === 'poesias') ? 'poesia' : $tipo;
+
+        $sql = "SELECT COUNT(*) FROM `textos`
+                WHERE `tipo` = :tipo AND `status` = :status";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['tipo' => $tipoQuery, 'status' => $status]);
+        return (int)$stmt->fetchColumn();
+    }
+
+    /**
      * Get a text by its ID.
      */
     public function find(int $id): ?array

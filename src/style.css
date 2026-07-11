@@ -852,6 +852,8 @@ blockquote {
    ========================================================================== */
 .admin-container {
     padding: 40px 24px;
+    max-width: 1160px;
+    --admin-list-grid: minmax(30ch, 2.3fr) minmax(0, 4.2fr) minmax(86px, 0.85fr) minmax(64px, 0.65fr) minmax(170px, 1.7fr);
 }
 
 .admin-header {
@@ -991,7 +993,7 @@ blockquote {
 /* Listings Grid/Table */
 .admin-table-header {
     display: grid;
-    grid-template-columns: 2fr 4fr 1fr 1fr 2fr;
+    grid-template-columns: var(--admin-list-grid);
     gap: 16px;
     padding: 16px 20px;
     background-color: var(--accent-light);
@@ -1028,7 +1030,7 @@ blockquote {
 
 .row-fields-visible {
     display: grid;
-    grid-template-columns: 2fr 4fr 1fr 1fr 2fr;
+    grid-template-columns: var(--admin-list-grid);
     gap: 16px;
     padding: 20px;
     align-items: center;
@@ -1037,6 +1039,7 @@ blockquote {
 /* Inline Edit Controls in rows */
 .inline-input-title {
     width: 100%;
+    min-height: 34px;
     font-size: 0.95rem;
     font-weight: 600;
     background: transparent;
@@ -1046,6 +1049,11 @@ blockquote {
     font-family: var(--font-sans);
     color: var(--dark-brown);
     transition: var(--transition);
+    line-height: 1.35;
+    overflow: hidden;
+    resize: none;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
 }
 
 .inline-input-title:hover {
@@ -1063,14 +1071,23 @@ blockquote {
 .preview-text-box {
     font-size: 0.85rem;
     color: var(--text-muted);
-    max-height: 90px;
+    width: min(50ch, 100%);
+    max-width: 100%;
+    max-height: calc(0.85rem * 1.45 * 5);
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4; /* Max lines shown */
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
-    white-space: pre-wrap;
-    line-height: 1.5;
+    white-space: normal;
+    line-height: 1.45;
+    text-align: left;
+    direction: ltr;
+    overflow-wrap: anywhere;
+}
+
+.row-fields-visible .col-preview {
+    margin-left: -28px;
 }
 
 .inline-select-modo {
