@@ -9,6 +9,8 @@ use RuntimeException;
 
 final class Database
 {
+    private const REQUIRED_TABLES = ['textos', 'usuarios'];
+
     private static ?PDO $instance = null;
     private static bool $schemaChecked = false;
 
@@ -119,7 +121,7 @@ final class Database
     private static function missingRequiredTables(PDO $pdo): array
     {
         $missing = [];
-        foreach (['textos', 'usuarios', 'poems'] as $table) {
+        foreach (self::REQUIRED_TABLES as $table) {
             $stmt = $pdo->prepare('SHOW TABLES LIKE ?');
             $stmt->execute([$table]);
             if (!$stmt->fetch()) {

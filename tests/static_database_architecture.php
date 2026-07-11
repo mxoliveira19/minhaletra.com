@@ -10,6 +10,21 @@ $checks[] = assertNotContains(
     'textos_mauricio.sql',
     'Database.php must not reference the old dump.'
 );
+$checks[] = assertContains(
+    $root . '/app/Core/Database.php',
+    "private const REQUIRED_TABLES = ['textos', 'usuarios'];",
+    'Database.php must require textos and usuarios for normal connections.'
+);
+$checks[] = assertNotContains(
+    $root . '/app/Core/Database.php',
+    "private const REQUIRED_TABLES = ['textos', 'usuarios', 'poems'];",
+    'poems must not be required for normal connections.'
+);
+$checks[] = assertNotContains(
+    $root . '/app/Core/Database.php',
+    "SHOW TABLES LIKE 'poems'",
+    'Database.php must not block normal connections when poems is absent.'
+);
 $checks[] = assertNotContains(
     $root . '/app/Core/Database.php',
     'INSERT INTO `usuarios`',
@@ -26,6 +41,16 @@ $checks[] = assertNotMatches(
     'schema.sql must not contain real data or destructive commands.'
 );
 $checks[] = assertContains(
+    $root . '/database/schema.sql',
+    'CREATE TABLE IF NOT EXISTS `poems`',
+    'schema.sql must keep the versioned poems table for new installations.'
+);
+$checks[] = assertContains(
+    $root . '/database/migrations/003_create_poems.sql',
+    'CREATE TABLE IF NOT EXISTS `poems`',
+    '003_create_poems.sql must remain available for explicit future application.'
+);
+$checks[] = assertContains(
     $root . '/scripts/create_admin.php',
     "PHP_SAPI !== 'cli'",
     'create_admin.php must refuse non-CLI execution.'
@@ -39,6 +64,16 @@ $checks[] = assertContains(
     $root . '/scripts/migrate.php',
     'schema_migrations',
     'migrate.php must track applied migrations.'
+);
+$checks[] = assertNotContains(
+    $root . '/app/Core/Database.php',
+    'schema_migrations',
+    'Database::connect must not run migrations automatically.'
+);
+$checks[] = assertNotContains(
+    $root . '/app/Core/Database.php',
+    '/database/migrations',
+    'Database::connect must not load migration files automatically.'
 );
 
 $failed = array_filter($checks, static fn (bool $result): bool => !$result);

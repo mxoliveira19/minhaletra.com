@@ -61,6 +61,8 @@ Os dados reais ficam no volume MariaDB configurado pelo Docker Compose. Dumps, b
 
 Configure o banco por variaveis de ambiente. Use `.env.example` como referencia e mantenha senhas somente em `.env` local ou no ambiente de producao.
 
+As tabelas obrigatorias para o funcionamento atual sao `textos` e `usuarios`. A tabela `poems` esta versionada em `database/schema.sql` e em `database/migrations/003_create_poems.sql`, mas permanece opcional enquanto a funcionalidade correspondente nao for adotada. A producao atual pode funcionar sem `poems`; quando essa estrutura for necessaria, aplique a migration 003 de forma explicita e controlada.
+
 `DB_AUTO_INIT_SCHEMA` deve ficar `0` por padrao. Em um ambiente novo, defina `DB_AUTO_INIT_SCHEMA=1` apenas para uma primeira inicializacao controlada do `database/schema.sql`, ou execute as migrations explicitamente:
 
 ```bash
@@ -74,3 +76,5 @@ docker compose run --rm --no-deps minhaletra_php php scripts/create_admin.php --
 ```
 
 Seeds de desenvolvimento devem ser manuais. Producao nunca deve importar dump local. Antes de qualquer alteracao estrutural, faca backup do banco.
+
+Migrations nunca sao executadas automaticamente durante requisicoes da aplicacao.
