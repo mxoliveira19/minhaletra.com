@@ -6,6 +6,8 @@ if ($tipo === 'poesias') {
     $titleDisplay = 'Crônicas';
 } elseif ($tipo === 'pensamentos') {
     $titleDisplay = 'Pensamentos';
+} elseif ($tipo === 'teorias') {
+    $titleDisplay = 'Teorias';
 } elseif ($tipo === 'frases') {
     $titleDisplay = 'Frases';
 }
@@ -43,6 +45,8 @@ foreach ($textos as $t) {
                 Aforismos breves e pensamentos condensados.
             <?php elseif ($tipo === 'crônicas'): ?>
                 Crônicas sobre a vida cotidiana e reflexões saudosas.
+            <?php elseif ($tipo === 'teorias'): ?>
+                Ensaios e teorias sobre pensamento, conhecimento e sociedade.
             <?php else: ?>
                 Reflexões sobre a razão, a ciência e a sociedade.
             <?php endif; ?>
@@ -72,8 +76,6 @@ foreach ($textos as $t) {
                         </div>
                         <?php if ($hasTitle): ?>
                             <h3 class="phrase-title">&mdash; <?= htmlspecialchars($titleText) ?></h3>
-                        <?php else: ?>
-                            <h3 class="phrase-author">&mdash; Maurício de Oliveira</h3>
                         <?php endif; ?>
                     </article>
 

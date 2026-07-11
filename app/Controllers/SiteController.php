@@ -77,6 +77,19 @@ final class SiteController
         ]);
     }
 
+    public function teorias(): void
+    {
+        $textos = $this->textoModel->allPublic('teorias');
+        $this->render('textos', [
+            'title' => 'Teorias | MaurÃ­cio de Oliveira',
+            'description' => 'Teorias e ensaios reflexivos de MaurÃ­cio de Oliveira sobre pensamento, sociedade e conhecimento.',
+            'canonical' => APP_URL . '/teorias',
+            'activeTab' => 'teorias',
+            'tipo' => 'teorias',
+            'textos' => $textos
+        ]);
+    }
+
     public function sobre(): void
     {
         $this->render('sobre', [

@@ -39,6 +39,7 @@ $router->get('/poesias', [SiteController::class, 'poesias']);
 $router->get('/frases', [SiteController::class, 'frases']);
 $router->get('/cronicas', [SiteController::class, 'cronicas']);
 $router->get('/pensamentos', [SiteController::class, 'pensamentos']);
+$router->get('/teorias', [SiteController::class, 'teorias']);
 $router->get('/sobre', [SiteController::class, 'sobre']);
 
 // Admin routes
@@ -57,4 +58,4 @@ $router->get('/admin/credenciais', [AdminController::class, 'credenciais']);
 $router->post('/admin/credenciais', [AdminController::class, 'credenciais']);
 
 // Dispatch
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

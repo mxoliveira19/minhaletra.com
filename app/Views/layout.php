@@ -50,6 +50,7 @@ $isAdmin = isset($_SESSION['user_id']);
                     <li><a href="/frases" class="nav-link <?= $activeTab === 'frases' ? 'active' : '' ?>">Frases</a></li>
                     <li><a href="/cronicas" class="nav-link <?= $activeTab === 'cronicas' ? 'active' : '' ?>">Crônicas</a></li>
                     <li><a href="/pensamentos" class="nav-link <?= $activeTab === 'pensamentos' ? 'active' : '' ?>">Pensamentos</a></li>
+                    <li><a href="/teorias" class="nav-link <?= $activeTab === 'teorias' ? 'active' : '' ?>">Teorias</a></li>
                     <li><a href="/sobre" class="nav-link <?= $activeTab === 'sobre' ? 'active' : '' ?>">Sobre</a></li>
                     
                     <?php if ($isAdmin): ?>

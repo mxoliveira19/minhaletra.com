@@ -86,7 +86,7 @@ final class AdminController
         $tab = $_GET['tab'] ?? 'ativos'; // 'ativos' ou 'rascunho'
 
         // Normalize tipo
-        if (!in_array($tipo, ['poesias', 'frases', 'cronicas', 'pensamentos'])) {
+        if (!in_array($tipo, ['poesias', 'frases', 'cronicas', 'pensamentos', 'teorias'])) {
             $tipo = 'poesias';
         }
 

@@ -20,6 +20,7 @@ $activeTab = 'admin'; // For layout navbar
         <a href="/admin?tipo=frases" class="tab-link <?= $tipo === 'frases' ? 'active' : '' ?>">Frases</a>
         <a href="/admin?tipo=cronicas" class="tab-link <?= $tipo === 'cronicas' ? 'active' : '' ?>">Crônicas</a>
         <a href="/admin?tipo=pensamentos" class="tab-link <?= $tipo === 'pensamentos' ? 'active' : '' ?>">Pensamentos</a>
+        <a href="/admin?tipo=teorias" class="tab-link <?= $tipo === 'teorias' ? 'active' : '' ?>">Teorias</a>
     </nav>
 
     <!-- Sub-navigation: Ativos / Rascunhos & Novo -->
