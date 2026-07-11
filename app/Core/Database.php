@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Core;
 
 use PDO;
-use Throwable;
+use RuntimeException;
 
 final class Database
 {
     private static ?PDO $instance = null;
+    private static bool $schemaChecked = false;
 
     public static function connect(): PDO
     {
@@ -17,74 +18,115 @@ final class Database
             return self::$instance;
         }
 
-        $dsn = sprintf(
-            'mysql:host=%s;port=%s;charset=utf8mb4',
-            DB_HOST,
-            DB_PORT
-        );
+        self::assertConfigured();
 
-        // Connect without database name to ensure the database can be created if missing
-        $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4"
-        ]);
-
-        $pdo->exec(sprintf('CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', DB_DATABASE));
-        $pdo->exec(sprintf('USE `%s`', DB_DATABASE));
+        $pdo = self::openConnection();
 
         self::$instance = $pdo;
-
-        try {
-            self::setup($pdo);
-        } catch (Throwable $e) {
-            // Fail silently or handle if database is in locked state
-            error_log('Database setup error: ' . $e->getMessage());
-        }
+        self::ensureSchema($pdo);
 
         return $pdo;
     }
 
-    private static function setup(PDO $pdo): void
+    private static function openConnection(): PDO
     {
-        // 1. Check if table `textos` exists
-        $stmt = $pdo->query("SHOW TABLES LIKE 'textos'");
-        $textosExists = (bool)$stmt->fetch();
+        if (DB_AUTO_INIT_SCHEMA === '1') {
+            $dsn = sprintf('mysql:host=%s;port=%s;charset=utf8mb4', DB_HOST, DB_PORT);
+            $pdo = new PDO($dsn, DB_USERNAME, DB_PASSWORD, self::pdoOptions());
+            $pdo->exec(sprintf('CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci', DB_DATABASE));
+            $pdo->exec(sprintf('USE `%s`', DB_DATABASE));
+            return $pdo;
+        }
 
-        if (!$textosExists) {
-            $sqlFile = __DIR__ . '/../../database/textos_mauricio.sql';
-            if (file_exists($sqlFile)) {
-                $sql = file_get_contents($sqlFile);
-                if (!empty($sql)) {
-                    $pdo->exec($sql);
-                }
+        $dsn = sprintf(
+            'mysql:host=%s;port=%s;dbname=%s;charset=utf8mb4',
+            DB_HOST,
+            DB_PORT,
+            DB_DATABASE
+        );
+
+        return new PDO($dsn, DB_USERNAME, DB_PASSWORD, self::pdoOptions());
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
+    private static function pdoOptions(): array
+    {
+        return [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8mb4',
+        ];
+    }
+
+    private static function assertConfigured(): void
+    {
+        foreach ([
+            'DB_DATABASE' => DB_DATABASE,
+            'DB_USERNAME' => DB_USERNAME,
+            'DB_PASSWORD' => DB_PASSWORD,
+        ] as $name => $value) {
+            if ($value === '') {
+                throw new RuntimeException($name . ' must be configured in the environment.');
+            }
+        }
+    }
+
+    private static function ensureSchema(PDO $pdo): void
+    {
+        if (self::$schemaChecked) {
+            return;
+        }
+
+        $missing = self::missingRequiredTables($pdo);
+        if ($missing === []) {
+            self::$schemaChecked = true;
+            return;
+        }
+
+        if (DB_AUTO_INIT_SCHEMA !== '1') {
+            throw new RuntimeException(
+                'Database schema is missing required tables (' . implode(', ', $missing) . '). ' .
+                'Set DB_AUTO_INIT_SCHEMA=1 only for an intentional first initialization, ' .
+                'or run scripts/migrate.php from CLI.'
+            );
+        }
+
+        $schemaFile = dirname(__DIR__, 2) . '/database/schema.sql';
+        if (!is_file($schemaFile)) {
+            throw new RuntimeException('Schema file not found: ' . $schemaFile);
+        }
+
+        $schema = file_get_contents($schemaFile);
+        if ($schema === false || trim($schema) === '') {
+            throw new RuntimeException('Schema file is empty or unreadable: ' . $schemaFile);
+        }
+
+        $pdo->exec($schema);
+
+        $missing = self::missingRequiredTables($pdo);
+        if ($missing !== []) {
+            throw new RuntimeException('Schema initialization did not create required tables: ' . implode(', ', $missing));
+        }
+
+        self::$schemaChecked = true;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private static function missingRequiredTables(PDO $pdo): array
+    {
+        $missing = [];
+        foreach (['textos', 'usuarios', 'poems'] as $table) {
+            $stmt = $pdo->prepare('SHOW TABLES LIKE ?');
+            $stmt->execute([$table]);
+            if (!$stmt->fetch()) {
+                $missing[] = $table;
             }
         }
 
-        // 2. Ensure column `status` exists in `textos`
-        $stmt = $pdo->query("SHOW COLUMNS FROM `textos` LIKE 'status'");
-        $statusExists = (bool)$stmt->fetch();
-        if (!$statusExists) {
-            $pdo->exec("ALTER TABLE `textos` ADD COLUMN `status` VARCHAR(20) DEFAULT 'publicado'");
-        }
-
-        // 3. Ensure table `usuarios` exists
-        $stmt = $pdo->query("SHOW TABLES LIKE 'usuarios'");
-        $usuariosExists = (bool)$stmt->fetch();
-
-        if (!$usuariosExists) {
-            $pdo->exec("CREATE TABLE `usuarios` (
-                `id` INT AUTO_INCREMENT PRIMARY KEY,
-                `email` VARCHAR(255) NOT NULL UNIQUE,
-                `senha` VARCHAR(255) NOT NULL,
-                `nome` VARCHAR(255) NOT NULL,
-                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
-
-            // Seed initial administrator
-            $hashedPassword = password_hash('admin123', PASSWORD_DEFAULT);
-            $stmtInsert = $pdo->prepare("INSERT INTO `usuarios` (`email`, `senha`, `nome`) VALUES (?, ?, ?)");
-            $stmtInsert->execute(['mxoliveira73@hotmail.com', $hashedPassword, 'Maurício de Oliveira']);
-        }
+        return $missing;
     }
 }

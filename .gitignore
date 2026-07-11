@@ -2,4 +2,15 @@ node_modules
 vendor
 .env
 .DS_Store
-meus_docs/*
+meus_docs/
+
+# Dumps, backups e bancos locais
+database/*.sql
+!database/schema.sql
+!database/migrations/*.sql
+database/backups/
+*.dump
+*.bak
+*.sqlite
+*.sqlite3
+*.db
