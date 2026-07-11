@@ -86,9 +86,7 @@ foreach ($textos as $t) {
                             <div class="poetry-divider">***</div>
                         <?php endif; ?>
                         
-                        <div class="poetry-content">
-                            <?= nl2br(htmlspecialchars($texto['conteudo'])) ?>
-                        </div>
+                        <div class="poetry-content"><?= htmlspecialchars(trim($texto['conteudo'])) ?></div>
                     </article>
 
                 <?php else: ?>
