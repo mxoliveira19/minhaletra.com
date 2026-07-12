@@ -36,6 +36,22 @@
                 <p>Para Maurício, a escrita não é apenas uma forma de registrar pensamentos, mas um espelho da própria existência — uma tentativa de organizar o caos inerente à experiência humana. Em suas poesias, o verso serve como música e desabafo; em suas frases, busca-se a máxima síntese do sentimento; e em suas crônicas e pensamentos, investiga-se com lucidez a realidade.</p>
                 
                 <p>O site <strong>Minha Letra</strong> é seu caderno aberto, onde compartilha com leitores de todos os lugares suas inquietações artísticas e intelectuais.</p>
+
+                <div class="author-formation">
+                    <h3>Formação do Autor</h3>
+                    <p><strong>Formação:</strong> História/Unesp - 1996.</p>
+                    <p>Estudou Filosofia na USP, UFSJ e UFOP, e atualmente estuda na UFSCar.</p>
+
+                    <h3>Trajetória Profissional</h3>
+                    <p>Começou a trabalhar ainda na adolescência como vendedor em loja de calçados. Depois foi professor, bancário, técnico de áudio, copidesque, técnico judiciário, auxiliar administrativo, programador de matrizes e programador de vetores. Também se interessa por matemática e física, chegando a cursar um ano de Engenharia Mecânica.</p>
+
+                    <p>Tudo isso mostra a inquietação do autor, sua necessidade de experiências, seu gosto pela diversidade da vida e da cultura, sua sede de observar os vários cantos do mundo, os vários olhares e pontos de vista dos indivíduos, da cultura e da sociedade.</p>
+
+                    <blockquote>
+                        "De tudo isso que vivi, aprendi muitas coisas técnicas, porém mais me encantei pelo lado humano, as pessoas, os amigos, as desavenças, os apuros, as realizações. Valeu a pena tudo isso, valeu observar a diversidade, sondar o mundo um pouquinho por cada olhar, e me encanta a cultura, a riqueza da vida humana e do próprio universo. Eu sou fascinado por isso."
+                        <cite>&mdash; Maurício de Oliveira</cite>
+                    </blockquote>
+                </div>
             </div>
         </div>
     </div>

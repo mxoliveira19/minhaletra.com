@@ -727,6 +727,16 @@ blockquote {
     margin-bottom: 16px;
 }
 
+.author-formation {
+    border-top: 1px solid var(--border-color);
+    margin-top: 42px;
+    padding-top: 12px;
+}
+
+.author-formation h3:first-child {
+    margin-top: 24px;
+}
+
 /* ==========================================================================
    Admin Area: Login View
    ========================================================================== */
@@ -1282,6 +1292,62 @@ blockquote {
 .footer-info p {
     font-size: 0.9rem;
     color: #a49182;
+}
+
+.footer-contact {
+    display: grid;
+    gap: 8px;
+    margin-top: 18px;
+    font-style: normal;
+}
+
+.footer-contact strong {
+    color: var(--white);
+    font-size: 0.95rem;
+}
+
+.footer-contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    color: #d8c8ba;
+    font-size: 0.9rem;
+}
+
+.footer-contact a:hover,
+.footer-social a:hover {
+    color: var(--white);
+}
+
+.footer-icon {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    fill: currentColor;
+}
+
+.footer-social {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.footer-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    color: #d8c8ba;
+}
+
+.footer-social svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }
 
 .footer-bottom {
