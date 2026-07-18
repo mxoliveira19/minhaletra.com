@@ -15,6 +15,8 @@ services:
       DB_USERNAME: ${DB_USERNAME:-minhaletra_user}
       DB_PASSWORD: ${DB_PASSWORD:-}
       DB_AUTO_INIT_SCHEMA: ${DB_AUTO_INIT_SCHEMA:-0}
+    volumes:
+      - ./storage:/var/www/html/storage
     networks:
       - minhaletra_net
 

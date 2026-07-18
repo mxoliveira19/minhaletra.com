@@ -202,6 +202,50 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // 6. Public: Joinha counter per text
+    const joinhaButtons = document.querySelectorAll('.joinha-button');
+    joinhaButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (button.disabled) {
+                return;
+            }
+
+            const textoId = button.getAttribute('data-texto-id');
+            const countEl = button.querySelector('.joinha-count');
+            const formData = new FormData();
+            formData.append('id', textoId);
+
+            button.disabled = true;
+
+            fetch('/joinha', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro na requisicao');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success && countEl) {
+                    countEl.textContent = data.count;
+                    countEl.classList.remove('hidden');
+                    button.classList.add('liked');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            })
+            .finally(() => {
+                button.disabled = false;
+            });
+        });
+    });
 });
 
 /**

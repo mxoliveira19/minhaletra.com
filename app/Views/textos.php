@@ -77,6 +77,7 @@ foreach ($textos as $t) {
                         <?php if ($hasTitle): ?>
                             <h3 class="phrase-title">&mdash; <?= htmlspecialchars($titleText) ?></h3>
                         <?php endif; ?>
+                        <?php require __DIR__ . '/partials/joinha_button.php'; ?>
                     </article>
 
                 <?php elseif ($tipo === 'poesias' || $tipo === 'poesia'): ?>
@@ -89,6 +90,7 @@ foreach ($textos as $t) {
                         <?php endif; ?>
                         
                         <div class="poetry-content"><?= htmlspecialchars(trim($texto['conteudo'])) ?></div>
+                        <?php require __DIR__ . '/partials/joinha_button.php'; ?>
                     </article>
 
                 <?php else: ?>
@@ -119,6 +121,7 @@ foreach ($textos as $t) {
                             }
                             ?>
                         </div>
+                        <?php require __DIR__ . '/partials/joinha_button.php'; ?>
                     </article>
                 <?php endif; ?>
             <?php endforeach; ?>

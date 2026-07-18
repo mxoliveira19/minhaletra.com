@@ -53,7 +53,15 @@ fi
 fi
 
 echo "Reconstruindo containers do site sem remover volumes..."
+mkdir -p storage
+touch storage/joinhas.json
 docker compose up -d --build
+
+echo "Garantindo permissao de escrita para o log de joinhas..."
+docker compose exec -T "$PHP_SERVICE" sh -lc 'mkdir -p /var/www/html/storage && touch /var/www/html/storage/joinhas.json && chown -R www-data:www-data /var/www/html/storage'
+
+echo "Aplicando migracoes do banco..."
+docker compose exec -T "$PHP_SERVICE" php scripts/migrate.php
 
 echo "Recriando o Nginx para carregar configuracoes atualizadas..."
 docker compose up -d --force-recreate minhaletra_nginx

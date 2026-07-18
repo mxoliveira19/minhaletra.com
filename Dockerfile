@@ -34,6 +34,7 @@ COPY app/ ./app/
 COPY database/schema.sql ./database/schema.sql
 COPY database/migrations/ ./database/migrations/
 COPY scripts/ ./scripts/
+RUN mkdir -p ./storage && chown -R www-data:www-data ./storage
 COPY --from=assets /var/www/html/public ./public/
 
 EXPOSE 9000

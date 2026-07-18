@@ -41,6 +41,7 @@ $router->get('/cronicas', [SiteController::class, 'cronicas']);
 $router->get('/pensamentos', [SiteController::class, 'pensamentos']);
 $router->get('/teorias', [SiteController::class, 'teorias']);
 $router->get('/sobre', [SiteController::class, 'sobre']);
+$router->post('/joinha', [SiteController::class, 'joinha']);
 
 // Admin routes
 $router->get('/admin/login', [AdminController::class, 'login']);

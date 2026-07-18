@@ -87,6 +87,28 @@ final class Texto
     }
 
     /**
+     * Increment and return the current joinha total for a published text.
+     */
+    public function incrementJoinhas(int $id): ?int
+    {
+        $sql = "UPDATE `textos`
+                SET `joinhas_count` = `joinhas_count` + 1
+                WHERE `id` = :id AND `status` = 'publicado'";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        if ($stmt->rowCount() !== 1) {
+            return null;
+        }
+
+        $countStmt = $this->db->prepare('SELECT `joinhas_count` FROM `textos` WHERE `id` = :id LIMIT 1');
+        $countStmt->execute(['id' => $id]);
+
+        return (int)$countStmt->fetchColumn();
+    }
+
+    /**
      * Save a text (insert new or update existing).
      */
     public function save(array $data): bool

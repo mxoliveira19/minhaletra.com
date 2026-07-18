@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `textos` (
   `peso` int(11) DEFAULT 0,
   `data_publicacao` datetime DEFAULT NULL,
   `status` varchar(20) DEFAULT 'publicado',
+  `joinhas_count` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

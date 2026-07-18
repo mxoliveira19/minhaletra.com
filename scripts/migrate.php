@@ -52,11 +52,9 @@ try {
 
         echo "Applying migration: {$name}" . PHP_EOL;
         try {
-            $pdo->beginTransaction();
             $pdo->exec($sql);
             $insert = $pdo->prepare('INSERT INTO `schema_migrations` (`migration`) VALUES (?)');
             $insert->execute([$name]);
-            $pdo->commit();
         } catch (Throwable $e) {
             if ($pdo->inTransaction()) {
                 $pdo->rollBack();

@@ -459,6 +459,7 @@ blockquote {
     border: 1px solid var(--border-color);
     text-align: center;
     transition: var(--transition);
+    position: relative;
 }
 
 .poetry-card:hover {
@@ -509,6 +510,7 @@ blockquote {
     flex-direction: column;
     justify-content: space-between;
     transition: var(--transition);
+    position: relative;
 }
 
 .phrase-card:hover {
@@ -561,6 +563,46 @@ blockquote {
     border-radius: 16px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color);
+    position: relative;
+}
+
+.joinha-button {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 6px;
+    min-height: 32px;
+    margin-top: 28px;
+    padding: 4px 2px;
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.joinha-button:hover,
+.joinha-button.liked {
+    color: var(--accent);
+}
+
+.joinha-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 6px;
+}
+
+.joinha-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+}
+
+.joinha-icon {
+    font-size: 1.15rem;
 }
 
 .article-title {

@@ -100,6 +100,51 @@ final class SiteController
         ]);
     }
 
+    public function joinha(): void
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id <= 0) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'message' => 'Texto inválido.']);
+            return;
+        }
+
+        $texto = $this->textoModel->find($id);
+        if (!$texto || ($texto['status'] ?? '') !== 'publicado') {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Texto não encontrado.']);
+            return;
+        }
+
+        if (!$this->appendJoinhaLog($id)) {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Não foi possível registrar o joinha.']);
+            return;
+        }
+
+        $count = $this->textoModel->incrementJoinhas($id);
+        if ($count === null) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Texto não encontrado.']);
+            return;
+        }
+
+        echo json_encode(['success' => true, 'count' => $count]);
+    }
+
+    private function appendJoinhaLog(int $id): bool
+    {
+        $storageDir = dirname(__DIR__, 2) . '/storage';
+        if (!is_dir($storageDir) && !mkdir($storageDir, 0775, true)) {
+            return false;
+        }
+
+        $line = json_encode(['id' => $id], JSON_UNESCAPED_UNICODE) . PHP_EOL;
+        return file_put_contents($storageDir . '/joinhas.json', $line, FILE_APPEND | LOCK_EX) !== false;
+    }
+
     private function render(string $view, array $data = []): void
     {
         extract($data);
