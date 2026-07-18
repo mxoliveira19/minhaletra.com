@@ -5,16 +5,19 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Texto;
+use App\Models\SiteConfig;
 use App\Models\Usuario;
 
 final class AdminController
 {
     private Texto $textoModel;
+    private SiteConfig $siteConfig;
     private Usuario $usuarioModel;
 
     public function __construct()
     {
         $this->textoModel = new Texto();
+        $this->siteConfig = new SiteConfig();
         $this->usuarioModel = new Usuario();
     }
 
@@ -104,8 +107,27 @@ final class AdminController
             'tab' => $tab,
             'textos' => $textos,
             'rascunhosCount' => $rascunhosCount,
+            'showFrasesJoinhaIcon' => $this->siteConfig->showFrasesJoinhaIcon(),
             'user_nome' => $_SESSION['user_nome'] ?? 'Administrador'
         ]);
+    }
+
+    public function toggleFrasesJoinhaIcon(): void
+    {
+        $this->checkAuth();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $show = ($_POST['show_frases_joinha_icon'] ?? '0') === '1';
+            $this->siteConfig->setShowFrasesJoinhaIcon($show);
+        }
+
+        $tab = $_POST['tab'] ?? 'ativos';
+        if (!in_array($tab, ['ativos', 'rascunho'], true)) {
+            $tab = 'ativos';
+        }
+
+        header('Location: /admin?tipo=frases&tab=' . urlencode($tab));
+        exit;
     }
 
     public function novo(): void

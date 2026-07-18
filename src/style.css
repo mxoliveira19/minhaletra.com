@@ -582,7 +582,7 @@ blockquote {
     padding: 4px 2px;
     border: 0;
     background: transparent;
-    color: var(--text-muted);
+    color: #8a827b;
     font-family: var(--font-sans);
     font-size: 0.95rem;
     font-weight: 700;
@@ -593,7 +593,7 @@ blockquote {
 
 .joinha-button:hover,
 .joinha-button.liked {
-    color: var(--accent);
+    color: #6f6862;
 }
 
 .joinha-button:focus-visible {
@@ -608,7 +608,19 @@ blockquote {
 }
 
 .joinha-icon {
-    font-size: 1.15rem;
+    display: inline-flex;
+    width: 19px;
+    height: 19px;
+}
+
+.joinha-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .article-title {
@@ -983,6 +995,22 @@ blockquote {
     margin-bottom: 24px;
     flex-wrap: wrap;
     gap: 16px;
+}
+
+.admin-sub-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-toggle-form {
+    display: inline-flex;
+}
+
+.btn-joinha-toggle.active {
+    background-color: var(--dark-brown);
+    color: var(--white);
+    border-color: var(--dark-brown);
 }
 
 .status-filters {

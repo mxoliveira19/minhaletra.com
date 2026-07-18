@@ -33,7 +33,20 @@ $activeTab = 'admin'; // For layout navbar
                 Rascunhos (<?= (int)$rascunhosCount ?>)
             </a>
         </div>
-        <div>
+        <div class="admin-sub-actions">
+            <?php if ($tipo === 'frases'): ?>
+                <form action="/admin/frases-joinha-icon" method="POST" class="admin-toggle-form">
+                    <input type="hidden" name="tab" value="<?= htmlspecialchars($tab) ?>">
+                    <input type="hidden" name="show_frases_joinha_icon" value="<?= $showFrasesJoinhaIcon ? '0' : '1' ?>">
+                    <button
+                        type="submit"
+                        class="btn btn-secondary btn-joinha-toggle <?= $showFrasesJoinhaIcon ? 'active' : '' ?>"
+                        title="<?= $showFrasesJoinhaIcon ? 'Ocultar coração nos cards de frases' : 'Mostrar coração nos cards de frases' ?>"
+                    >
+                        <?= $showFrasesJoinhaIcon ? 'Ocultar coração' : 'Mostrar coração' ?>
+                    </button>
+                </form>
+            <?php endif; ?>
             <button class="btn btn-success" id="btnToggleNewForm">+ Novo Texto</button>
         </div>
     </div>

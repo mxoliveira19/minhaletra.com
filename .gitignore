@@ -17,3 +17,4 @@ database/backups/
 
 # Runtime click log
 storage/joinhas.json
+storage/site_config.json

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\Models\Texto;
+use App\Models\SiteConfig;
 
 final class SiteController
 {
     private Texto $textoModel;
+    private SiteConfig $siteConfig;
 
     public function __construct()
     {
         $this->textoModel = new Texto();
+        $this->siteConfig = new SiteConfig();
     }
 
     public function home(): void
@@ -47,7 +50,8 @@ final class SiteController
             'canonical' => APP_URL . '/frases',
             'activeTab' => 'frases',
             'tipo' => 'frases',
-            'textos' => $textos
+            'textos' => $textos,
+            'showFrasesJoinhaIcon' => $this->siteConfig->showFrasesJoinhaIcon()
         ]);
     }
 

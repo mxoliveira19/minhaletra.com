@@ -51,6 +51,7 @@ $router->get('/admin/logout', [AdminController::class, 'logout']);
 $router->get('/admin', [AdminController::class, 'dashboard']);
 $router->post('/admin/novo', [AdminController::class, 'novo']);
 $router->post('/admin/editar', [AdminController::class, 'editar']);
+$router->post('/admin/frases-joinha-icon', [AdminController::class, 'toggleFrasesJoinhaIcon']);
 $router->get('/admin/status', [AdminController::class, 'status']);
 $router->post('/admin/status', [AdminController::class, 'status']);
 $router->get('/admin/deletar', [AdminController::class, 'deletar']);
