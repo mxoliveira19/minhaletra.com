@@ -40,7 +40,6 @@ git pull --ff-only origin "$BRANCH"
 
 echo "Reconstruindo containers do site sem remover volumes..."
 mkdir -p storage
-touch storage/joinhas.json
 docker compose up -d --build
 
 echo "Garantindo permissao de escrita para o log de joinhas..."
