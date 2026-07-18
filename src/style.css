@@ -466,6 +466,12 @@ blockquote {
     box-shadow: var(--shadow-md);
 }
 
+.poetry-card .joinha-button {
+    display: flex;
+    width: max-content;
+    margin-right: auto;
+}
+
 .poetry-title {
     font-size: 1.75rem;
     margin-bottom: 36px;
