@@ -4,7 +4,6 @@ set -eu
 PROJECT_DIR="/opt/docker/sites/minhaletra.com"
 BRANCH="${DEPLOY_BRANCH:-main}"
 PHP_SERVICE="${PHP_SERVICE:-minhaletra_php}"
-BUILD_ASSETS="${BUILD_ASSETS:-1}"
 
 cd "$PROJECT_DIR"
 
@@ -38,19 +37,6 @@ fi
 echo "Buscando atualizacoes..."
 git fetch origin
 git pull --ff-only origin "$BRANCH"
-
-if [ "$BUILD_ASSETS" = "1" ] && [ -f package.json ]; then
-echo "Instalando dependencias e gerando assets Vite dentro do container..."
-docker compose run --rm --no-deps "$PHP_SERVICE" sh -lc 'npm ci && npm run build'
-
-if [ -d public/build ]; then
-  uid="$(id -u)"
-  gid="$(id -g)"
-
-  docker compose run --rm --no-deps "$PHP_SERVICE" \
-    chown -R "$uid:$gid" /var/www/html/public/build
-fi
-fi
 
 echo "Reconstruindo containers do site sem remover volumes..."
 mkdir -p storage
